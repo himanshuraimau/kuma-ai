@@ -4,18 +4,23 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/ui/input-field";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authApi } from "@/lib/api/auth";
 
 export function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {},
   );
+  const [submitError, setSubmitError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
+    setSubmitError("");
 
     // Basic validation
     const newErrors: typeof errors = {};
@@ -28,9 +33,21 @@ export function LoginForm() {
     }
 
     setIsLoading(true);
-    // TODO: Implement actual login logic
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const { error } = await authApi.signInWithEmail({
+      email,
+      password,
+    });
+
     setIsLoading(false);
+
+    if (error) {
+      setSubmitError(error.message ?? "Unable to sign in");
+      return;
+    }
+
+    router.push("/workspace");
+    router.refresh();
   };
 
   return (
@@ -81,6 +98,10 @@ export function LoginForm() {
       >
         {isLoading ? "Signing in..." : "Sign in"}
       </Button>
+
+      {submitError ? (
+        <p className="text-center text-sm text-destructive">{submitError}</p>
+      ) : null}
 
       {/* Divider */}
       <div className="relative">

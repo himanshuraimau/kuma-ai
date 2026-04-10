@@ -15,4 +15,13 @@ export const chatModule = createFeatureModule({
 });
 
 export type { ChatThread } from "./chat.types";
-export { createChatThread, describeChatFeature } from "./chat.service";
+export {
+  createThread,
+  deleteMessage,
+  describeChatFeature,
+  editMessage,
+  listThreadMessages,
+  listThreads,
+  regenerateMessage,
+  streamAssistantResponse,
+} from "./chat.service";

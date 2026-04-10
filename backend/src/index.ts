@@ -3,10 +3,6 @@ import { createApp } from "./app";
 
 const app = createApp();
 
-Bun.serve({
-  fetch: app.fetch,
-  hostname: env.host,
-  port: env.port,
+app.listen(env.port, env.host, () => {
+  console.log(`Kuma AI backend running on http://${env.host}:${env.port}`);
 });
-
-console.log(`Kuma AI backend running on http://${env.host}:${env.port}`);

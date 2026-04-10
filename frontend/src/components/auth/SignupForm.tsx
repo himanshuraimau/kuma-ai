@@ -5,14 +5,18 @@ import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/ui/input-field";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { authApi } from "@/lib/api/auth";
 
 export function SignupForm() {
+  const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   // Password strength calculation
@@ -29,6 +33,7 @@ export function SignupForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setSubmitError("");
 
     // Validation
     const newErrors: Record<string, string> = {};
@@ -47,9 +52,22 @@ export function SignupForm() {
     }
 
     setIsLoading(true);
-    // TODO: Implement actual signup logic
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const { error } = await authApi.signUpWithEmail({
+      name: fullName,
+      email,
+      password,
+    });
+
     setIsLoading(false);
+
+    if (error) {
+      setSubmitError(error.message ?? "Unable to create account");
+      return;
+    }
+
+    router.push("/workspace");
+    router.refresh();
   };
 
   return (
@@ -180,6 +198,10 @@ export function SignupForm() {
       >
         {isLoading ? "Creating account..." : "Create Account"}
       </Button>
+
+      {submitError ? (
+        <p className="text-center text-sm text-destructive">{submitError}</p>
+      ) : null}
 
       {/* Sign in link */}
       <p className="text-center text-sm text-muted-foreground">

@@ -1,0 +1,21 @@
+---
+applyTo: "backend/**"
+---
+# Backend Instructions
+- Stack: Bun + Express 5 + Better Auth + Prisma 7 + PostgreSQL.
+- Entry flow: `src/index.ts` -> `createApp()` in `src/app.ts`.
+- Keep middleware order: CORS, Better Auth handler, then `express.json()`.
+- Auth route pattern is Express 5 style: `/api/auth/{*any}`.
+- Keep `credentials: true` in CORS and exact frontend origin from env.
+- Auth config lives in `src/lib/auth.ts`; do not duplicate auth client logic elsewhere.
+- Protected routes should use `requireAuth` from `src/lib/require-auth.ts`.
+- Prisma 7 conventions:
+  - Connection URL belongs in `prisma.config.ts`.
+  - `schema.prisma` datasource should define provider only.
+  - Prisma client uses `@prisma/adapter-pg` in `src/lib/prisma.ts`.
+- Prefer scripts over ad-hoc commands:
+  - `bun run db:generate`
+  - `bun run db:migrate`
+  - `bun run db:reset`
+- Keep responses JSON and API behavior explicit.
+- Do not introduce CommonJS.

@@ -4,12 +4,28 @@
   "type": "module",
   "scripts": {
     "dev": "bun run src/index.ts",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/index.ts",
+    "db:migrate": "bunx --bun prisma migrate dev --name init-better-auth",
+    "db:generate": "bunx --bun prisma generate",
+    "db:reset": "bunx --bun prisma migrate reset --force && bun run db:migrate"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.52",
+    "@prisma/adapter-pg": "^7.7.0",
+    "@prisma/client": "7.7.0",
+    "ai": "^6.0.156",
+    "better-auth": "^1.6.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "pg": "^8.20.0",
+    "prisma": "7.7.0"
   }
 }
