@@ -9,7 +9,7 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Pricing } from "@/components/sections/Pricing";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
-export default function Home() {
+export default function LandingPage() {
   return (
     <>
       <Navbar />

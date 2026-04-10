@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "kuma-ai",
-  description: "kuma-ai design system showcase",
+  title: "Kuma Station | Your Thinking System",
+  description:
+    "AI that reads, remembers, and reasons across everything you give it. Not a chatbot. A thinking system built for depth.",
 };
 
 export default function RootLayout({
